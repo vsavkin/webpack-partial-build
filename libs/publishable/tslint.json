@@ -1,0 +1,17 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "try-partial-bundling",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "try-partial-bundling",
+      "kebab-case"
+    ]
+  }
+}

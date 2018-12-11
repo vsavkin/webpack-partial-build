@@ -16,6 +16,12 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@try-partial-bundling/mylib": [
+        "libs/mylib/src/index.ts"
+      ],
+      "@try-partial-bundling/publishable": [
+        "libs/publishable/src/index.ts"
+      ]
     }
   },
   "exclude": [

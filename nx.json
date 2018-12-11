@@ -7,5 +7,24 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "mylib": {
+      "tags": []
+    },
+    "mylibapp": {
+      "tags": []
+    },
+    "mylibapp-e2e": {
+      "tags": []
+    },
+    "platform": {
+      "tags": []
+    },
+    "platform-e2e": {
+      "tags": []
+    },
+    "publishable": {
+      "tags": []
+    }
+  }
 }

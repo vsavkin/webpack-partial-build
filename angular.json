@@ -2,7 +2,334 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "mylib": {
+      "root": "libs/mylib",
+      "sourceRoot": "libs/mylib/src",
+      "projectType": "library",
+      "prefix": "try-partial-bundling",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/mylib/tsconfig.lib.json",
+              "libs/mylib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/mylib/jest.config.js",
+            "tsConfig": "libs/mylib/tsconfig.spec.json",
+            "setupFile": "libs/mylib/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "mylibapp": {
+      "root": "apps/mylibapp/",
+      "sourceRoot": "apps/mylibapp/src",
+      "projectType": "application",
+      "prefix": "try-partial-bundling",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./apps/mylibapp/extra-webpack.config.js",
+              "mergeStrategies": { "externals": "prepend" }
+            },
+            "outputPath": "dist/apps/mylibapp",
+            "index": "apps/mylibapp/src/index.html",
+            "main": "apps/mylibapp/src/main.ts",
+            "polyfills": "apps/mylibapp/src/polyfills.ts",
+            "tsConfig": "apps/mylibapp/tsconfig.app.json",
+            "vendorChunk": false,
+            "assets": [
+              "apps/mylibapp/src/favicon.ico",
+              "apps/mylibapp/src/assets"
+            ],
+            "styles": [
+              "apps/mylibapp/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/mylibapp/src/environments/environment.ts",
+                  "with": "apps/mylibapp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mylibapp:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "mylibapp:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "mylibapp:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/mylibapp/src/test.ts",
+            "polyfills": "apps/mylibapp/src/polyfills.ts",
+            "tsConfig": "apps/mylibapp/tsconfig.spec.json",
+            "karmaConfig": "apps/mylibapp/karma.conf.js",
+            "styles": [
+              "apps/mylibapp/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/mylibapp/src/favicon.ico",
+              "apps/mylibapp/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/mylibapp/tsconfig.app.json",
+              "apps/mylibapp/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "mylibapp-e2e": {
+      "root": "apps/mylibapp-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/mylibapp-e2e/protractor.conf.js",
+            "devServerTarget": "mylibapp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "mylibapp:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/mylibapp-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "platform": {
+      "root": "apps/platform/",
+      "sourceRoot": "apps/platform/src",
+      "projectType": "application",
+      "prefix": "try-partial-bundling",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./apps/platform/extra-webpack.config.js",
+              "mergeStrategies": { "externals": "prepend" }
+            },
+            "outputPath": "dist/apps/platform",
+            "index": "apps/platform/src/index.html",
+            "main": "apps/platform/src/main.ts",
+            "polyfills": "apps/platform/src/polyfills.ts",
+            "tsConfig": "apps/platform/tsconfig.app.json",
+            "assets": [
+              "apps/platform/src/favicon.ico",
+              "apps/platform/src/assets"
+            ],
+            "styles": [
+              "apps/platform/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/platform/src/environments/environment.ts",
+                  "with": "apps/platform/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "platform:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "platform:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "platform:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/platform/src/test.ts",
+            "polyfills": "apps/platform/src/polyfills.ts",
+            "tsConfig": "apps/platform/tsconfig.spec.json",
+            "karmaConfig": "apps/platform/karma.conf.js",
+            "styles": [
+              "apps/platform/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/platform/src/favicon.ico",
+              "apps/platform/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/platform/tsconfig.app.json",
+              "apps/platform/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "platform-e2e": {
+      "root": "apps/platform-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/platform-e2e/protractor.conf.js",
+            "devServerTarget": "platform:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "platform:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/platform-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "publishable": {
+      "root": "libs/publishable",
+      "sourceRoot": "libs/publishable/src",
+      "projectType": "library",
+      "prefix": "try-partial-bundling",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/publishable/tsconfig.lib.json",
+            "project": "libs/publishable/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/publishable/tsconfig.lib.json",
+              "libs/publishable/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/publishable/jest.config.js",
+            "tsConfig": "libs/publishable/tsconfig.spec.json",
+            "setupFile": "libs/publishable/src/test-setup.ts"
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -10,5 +337,6 @@
     },
     "defaultCollection": "@nrwl/schematics",
     "packageManager": "npm"
-  }
+  },
+  "defaultProject": "mylib"
 }
